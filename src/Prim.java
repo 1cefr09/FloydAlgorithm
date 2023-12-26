@@ -4,6 +4,7 @@ import java.util.*;
 public class Prim {
     static final int INF = 9999;
     public static void main(String[] args) {
+        int sum=0;
         int[][] arr = new int[][]{
                 {0, 3, 2, 4, INF, INF,INF},
                 {3, 0, 4, INF, INF, INF,6},
@@ -37,7 +38,8 @@ public class Prim {
                 break;
             }
             visited[temp[2]]=true;
-            System.out.println("起点："+temp[1]+" 终点："+temp[2]+"  长度为："+temp[0]);
+            sum=sum+temp[0];
+            System.out.println("起点："+temp[1]+" 终点："+temp[2]+"  距离："+temp[0]);
             for (int i = 0; i < arr.length; i++) {
                 if(arr[temp[2]][i]!=0&&!visited[i]){
                     queue.add(new Integer[]{arr[temp[2]][i],temp[2],i});
@@ -45,5 +47,6 @@ public class Prim {
             }
             count++;
         }
+        System.out.println("最小生成树的权值和为："+sum);
     }
 }

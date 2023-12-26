@@ -3,34 +3,30 @@ public class FloydAlgorithm {
     private static final int INF = 9999;
 
     public static void main(String[] args) {
-        int[][] graph = {
-                {0, 5, INF, 10},
-                {INF, 0, 3, INF},
-                {INF, INF, 0, 1},
-                {INF, INF, INF, 0}
+        double[][] graph = {
+                {0, 9.2,1.1,3.5,INF, INF},
+                {1.3, 0,4.7,INF,7.2, INF},
+                {2.5,INF,0,INF,1.8,INF},
+                {INF, INF,5.3,0,2.4,7.5},
+                {INF, 6.4,2.2,8.9,0,5.1},
+                {7.7, INF,2.7,INF,2.1,0}
         };
 
-        int[][][] result = floydAlgorithm(graph);
-        int[][] shortestPaths = result[0];
-        int[][] nextNodes = result[1];
+        double[][][] result = floydAlgorithm(graph);
+        double[][] shortestPaths = result[0];
+        double[][] nextNodes = result[1];
 
         System.out.println("最短路径矩阵：");
         printMatrix(shortestPaths);
 
         System.out.println("路径的前驱矩阵：");
         printMatrix(nextNodes);
-
-        int source = 0;
-        int destination = 3;
-        System.out.println("从节点 " + source + " 到节点 " + destination + " 的最短路径：");
-        printPath(source, destination, nextNodes);
     }
 
-    public static int[][][] floydAlgorithm(int[][] graph) {
+    public static double[][][] floydAlgorithm(double[][] graph) {
         int n = graph.length;
-        int[][] dist = new int[n][n];
-        int[][] next = new int[n][n];
-
+        double[][] dist = new double[n][n];
+        double[][] next = new double[n][n];
         // 初始化距离矩阵和前驱矩阵
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -42,25 +38,27 @@ public class FloydAlgorithm {
                 }
             }
         }
-
         // 计算最短路径和前驱矩阵
         for (int k = 0; k < n; k++) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     if (dist[i][k] + dist[k][j] < dist[i][j]) {
                         dist[i][j] = dist[i][k] + dist[k][j];
-                        next[i][j] = next[i][k];
+                        next[i][j] = k;
                     }
                 }
             }
+            System.out.println("W"+k);
+            printMatrix(dist);
+            System.out.println("P"+k);
+            printMatrix(next);
         }
 
-        return new int[][][]{dist, next};
+        return new double[][][]{dist, next};
     }
 
-    public static void printMatrix(int[][] matrix) {
+    public static void printMatrix(double[][] matrix) {
         int n = matrix.length;
-
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (matrix[i][j] == INF) {
@@ -74,14 +72,4 @@ public class FloydAlgorithm {
         System.out.println();
     }
 
-    public static void printPath(int source, int destination, int[][] nextNodes) {
-        StringBuilder path = new StringBuilder(source + " ");
-
-        while (source != destination) {
-            source = nextNodes[source][destination];
-            path.append(source).append(" ");
-        }
-
-        System.out.println(path.toString());
-    }
 }
